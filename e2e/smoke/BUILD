@@ -2,16 +2,19 @@
 Add a basic smoke-test target below.
 """
 
-load("@bazel_skylib//rules:build_test.bzl", "build_test")
-# load("@com_myorg_rules_mylang//mylang:defs.bzl", "...")
+load("@aspect_bazel_lib//lib:testing.bzl", "assert_json_matches")
+load("@yq.bzl", "yq")
 
-# Replace with a usage of your rule/macro
-filegroup(name = "empty")
+yq(
+    name = "no_srcs",
+    srcs = [],
+    filter = ".name = \"Alice\"",
+)
 
-build_test(
+assert_json_matches(
     name = "smoke_test",
-    targets = [
-        # targets you add above
-        ":empty",
-    ],
+    file1 = "no_srcs.json",
+    file2 = "no_srcs.json",
+    filter1 = ".name",
+    filter2 = "\"Alice\"",
 )

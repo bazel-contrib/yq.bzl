@@ -50,10 +50,7 @@ repos:
     rev: v0.14.0
     hooks:
       - id: yamlfmt
-        exclude: |
-          (?x)^(
-            .bcr/config.yml
-          )
+        exclude: yq/tests/multidoc.yaml
   - repo: https://github.com/crate-ci/typos
     rev: v1.28.4
     hooks:
