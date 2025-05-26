@@ -2,7 +2,8 @@
 Add a basic smoke-test target below.
 """
 
-load("@aspect_bazel_lib//lib:testing.bzl", "assert_contains")
+load("@aspect_bazel_lib//lib:diff_test.bzl", "diff_test")
+load("@bazel_skylib//rules:write_file.bzl", "write_file")
 load("@yq.bzl", "yq")
 
 yq(
@@ -11,8 +12,17 @@ yq(
     expression = ".name = \"Alice\"",
 )
 
-assert_contains(
+write_file(
+    name = "expected",
+    out = "expected.yaml",
+    content = [
+        "name: Alice",
+        "",
+    ],
+)
+
+diff_test(
     name = "smoke_test",
-    actual = "no_srcs.yaml",
-    expected = "name: Alice",
+    file1 = "no_srcs.yaml",
+    file2 = "expected.yaml",
 )
