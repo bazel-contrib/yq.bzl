@@ -91,7 +91,3 @@ yq(
     ]),
 )
 ```
-
-## API docs
-
-- [yq](docs/yq.md) Run `yq` as a Bazel build action

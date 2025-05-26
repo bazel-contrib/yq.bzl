@@ -21,13 +21,13 @@ repos:
       - id: check-shebang-scripts-are-executable
       - id: check-toml
       - id: check-yaml
+        exclude: |
+          (?x)^(
+            yq/tests/multidoc.yaml
+          )
       - id: destroyed-symlinks
       - id: detect-private-key
       - id: end-of-file-fixer
-        exclude: |
-          (?x)^(
-            docs/
-          )
       - id: trailing-whitespace
   # Check formatting and lint for starlark code
   - repo: https://github.com/keith/pre-commit-buildifier
@@ -50,7 +50,6 @@ repos:
     rev: v0.14.0
     hooks:
       - id: yamlfmt
-        exclude: yq/tests/multidoc.yaml
   - repo: https://github.com/crate-ci/typos
     rev: v1.28.4
     hooks:

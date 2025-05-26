@@ -1,6 +1,7 @@
 load("@aspect_bazel_lib//lib:copy_file.bzl", "copy_file")
 load("@aspect_bazel_lib//lib:diff_test.bzl", "diff_test")
 load("@aspect_bazel_lib//lib:testing.bzl", "assert_contains")
+load("@bazel_skylib//rules:write_file.bzl", "write_file")
 load("//yq:yq.bzl", "yq")
 
 exports_files(
@@ -157,6 +158,15 @@ yq(
     name = "case_no_sources",
     srcs = [],
     expression = ".",
+)
+
+write_file(
+    name = "empty",
+    out = "empty.yaml",
+    content = [
+        "",
+        "",
+    ],
 )
 
 diff_test(
