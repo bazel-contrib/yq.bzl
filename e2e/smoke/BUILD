@@ -2,19 +2,17 @@
 Add a basic smoke-test target below.
 """
 
-load("@aspect_bazel_lib//lib:testing.bzl", "assert_json_matches")
+load("@aspect_bazel_lib//lib:testing.bzl", "assert_contains")
 load("@yq.bzl", "yq")
 
 yq(
     name = "no_srcs",
     srcs = [],
-    filter = ".name = \"Alice\"",
+    expression = ".name = \"Alice\"",
 )
 
-assert_json_matches(
+assert_contains(
     name = "smoke_test",
-    file1 = "no_srcs.json",
-    file2 = "no_srcs.json",
-    filter1 = ".name",
-    filter2 = "\"Alice\"",
+    actual = "no_srcs.yaml",
+    expected = "name: Alice",
 )
