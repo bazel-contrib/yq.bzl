@@ -1,2 +1,3 @@
 docs/*.md
 yq/tests/*.json
+yq/tests/empty.yaml
