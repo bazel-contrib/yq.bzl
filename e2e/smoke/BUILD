@@ -2,16 +2,17 @@
 Add a basic smoke-test target below.
 """
 
-load("@bazel_skylib//rules:build_test.bzl", "build_test")
-# load("@com_myorg_rules_mylang//mylang:defs.bzl", "...")
+load("@aspect_bazel_lib//lib:testing.bzl", "assert_contains")
+load("@yq.bzl", "yq")
 
-# Replace with a usage of your rule/macro
-filegroup(name = "empty")
+yq(
+    name = "no_srcs",
+    srcs = [],
+    expression = ".name = \"Alice\"",
+)
 
-build_test(
+assert_contains(
     name = "smoke_test",
-    targets = [
-        # targets you add above
-        ":empty",
-    ],
+    actual = "no_srcs.yaml",
+    expected = "name: Alice",
 )
