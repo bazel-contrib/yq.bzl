@@ -1,4 +1,5 @@
 load("@package_metadata//rules:package_metadata.bzl", "package_metadata")
+load("//yq:yq.bzl", "yq")
 
 package_metadata(
     name = "package_metadata",
@@ -7,4 +8,11 @@ package_metadata(
         module_version(),
     ),
     visibility = ["//visibility:public"],
+)
+
+# Test that yq works in the root package
+yq(
+    name = "yq_root-test",
+    srcs = ["//yq/tests:a.yaml"],
+    expression = ".",
 )
