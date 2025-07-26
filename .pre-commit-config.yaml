@@ -54,3 +54,8 @@ repos:
     rev: v1.28.4
     hooks:
       - id: typos
+        exclude: |
+          (?x)^(
+            lib/private/yq_toolchain.bzl|
+            yq/toolchain/versions.bzl
+          )

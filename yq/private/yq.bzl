@@ -27,7 +27,7 @@ def _escape_path(path):
     return "/".join([".." for t in path.split("/")]) + "/"
 
 def _yq_impl(ctx):
-    yq_bin = ctx.toolchains["@aspect_bazel_lib//lib:yq_toolchain_type"].yqinfo.bin
+    yq_bin = ctx.toolchains["@yq.bzl//yq/toolchain:type"].yqinfo.bin
 
     outs = ctx.outputs.outs
     args = ctx.attr.args[:]
@@ -60,7 +60,7 @@ def _yq_impl(ctx):
                 out = stamp_yaml.path,
             ),
             mnemonic = "ConvertStatusToYaml",
-            toolchain = "@aspect_bazel_lib//lib:yq_toolchain_type",
+            toolchain = "@yq.bzl//yq/toolchain:type",
         )
     else:
         # create an empty stamp file as placeholder
@@ -92,7 +92,7 @@ def _yq_impl(ctx):
         command = cmd,
         env = {"STAMP": escape_bin_dir + stamp_yaml.path},
         mnemonic = "Yq",
-        toolchain = "@aspect_bazel_lib//lib:yq_toolchain_type",
+        toolchain = "@yq.bzl//yq/toolchain:type",
     )
 
     return DefaultInfo(files = depset(outs), runfiles = ctx.runfiles(outs))
