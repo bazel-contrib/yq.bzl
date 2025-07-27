@@ -122,8 +122,8 @@ diff_test(
 # Convert json to yaml
 yq(
     name = "case_convert_json_to_yaml",
-    srcs = ["//yq/tests:a_pretty.json"],
-    args = ["-P"],
+    srcs = [":a_pretty.json"],
+    args = ["-p=json"],
     expression = ".",
 )
 
@@ -143,7 +143,7 @@ yq(
 diff_test(
     name = "case_convert_json_to_yaml_otherextension_test",
     file1 = "a.yaml",
-    file2 = ":case_convert_json_to_yaml",
+    file2 = ":case_convert_json_to_yaml_otherextension",
 )
 
 # No srcs, output is a generated expression
@@ -377,7 +377,7 @@ yq(
         "//yq/tests:a.json",
         "//yq/tests:b.json",
     ],
-    args = ["-P"],
+    args = ["-p=json"],
     expression = ". as $item ireduce ({}; . * $item )",
 )
 

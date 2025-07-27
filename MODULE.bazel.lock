@@ -87,7 +87,7 @@
   "moduleExtensions": {
     "//yq:extensions.bzl%toolchains": {
       "general": {
-        "bzlTransitiveDigest": "4k1Dj+iUAPZWlbWzZpkfjGwsKJlvc51FcwvlqP5LVf0=",
+        "bzlTransitiveDigest": "SXoubb74kNv9vC5qOyVImBd/+OFBQxjngR2wv8j2ig0=",
         "usagesDigest": "79mKJ6dBo9Z2wZ/CsHNw6xX3eeSUNiVeJJNUgbSl2zE=",
         "recordedFileInputs": {},
         "recordedDirentsInputs": {},
@@ -157,11 +157,6 @@
               "version": "4.45.1"
             }
           },
-          "yq": {
-            "bzlFile": "@@//yq/toolchain:toolchain.bzl",
-            "ruleClassName": "yq_host_alias_repo",
-            "attributes": {}
-          },
           "yq_toolchains": {
             "bzlFile": "@@//yq/toolchain:toolchain.bzl",
             "ruleClassName": "yq_toolchains_repo",
@@ -170,13 +165,7 @@
             }
           }
         },
-        "recordedRepoMappingEntries": [
-          [
-            "",
-            "aspect_bazel_lib",
-            "aspect_bazel_lib~"
-          ]
-        ]
+        "recordedRepoMappingEntries": []
       }
     },
     "@@apple_support~//crosstool:setup.bzl%apple_cc_configure_extension": {
