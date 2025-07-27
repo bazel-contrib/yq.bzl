@@ -5,7 +5,7 @@ load("//yq/private:yq.bzl", _is_split_operation = "is_split_operation", _yq_lib 
 _yq_rule = rule(
     attrs = _yq_lib.attrs,
     implementation = _yq_lib.implementation,
-    toolchains = ["@aspect_bazel_lib//lib:yq_toolchain_type"],
+    toolchains = ["@yq.bzl//yq/toolchain:type"],
 )
 
 def yq(name, srcs, expression = ".", args = [], outs = None, **kwargs):
