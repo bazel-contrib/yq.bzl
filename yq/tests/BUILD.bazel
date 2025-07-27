@@ -42,6 +42,19 @@ diff_test(
     file2 = ":case_dot_expression",
 )
 
+# srcs could be select() statements
+yq(
+    name = "case_select_srcs",
+    srcs = select({"//conditions:default": ["a.yaml"]}),
+    expression = ".",
+)
+
+diff_test(
+    name = "case_select_srcs_test",
+    file1 = "a.yaml",
+    file2 = ":case_select_srcs",
+)
+
 yq(
     name = "case_dot_expression_otherextension",
     srcs = ["a.whatever"],

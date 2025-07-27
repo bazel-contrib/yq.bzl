@@ -71,8 +71,10 @@ def yq(name, srcs, expression = ".", args = [], outs = None, **kwargs):
             elif outs[0].endswith(".tsv") and "-o=t" not in args and "--outputformat=tsv" not in args:
                 args.append("-o=t")
 
-    # If the input files are json or xml, set the parse flag if it isn't already set
-    if len(srcs) > 0:
+    # If the input files are json or xml, set the parse flag if it isn't already set.
+    # Select statements can't be inspected by macros, so if you're using configurable
+    # attributes, you'll need to add the -P or -p=xml arguments yourself as needed.
+    if type(srcs) != "select" and len(srcs) > 0:
         if srcs[0].endswith(".json") and "-P" not in args:
             args.append("-P")
         elif srcs[0].endswith(".xml") and "-p=xml" not in args:
