@@ -32,4 +32,4 @@ done
 echo "},"
 
 printf "\n"
-echo "Paste the above into VERSIONS in yq_toolchain.bzl."
+echo "Paste the above at the top of the dictionary in versions.bzl."
