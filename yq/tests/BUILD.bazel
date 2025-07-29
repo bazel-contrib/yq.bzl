@@ -55,6 +55,19 @@ diff_test(
     file2 = ":case_select_srcs",
 )
 
+# srcs could contain Label objects
+yq(
+    name = "case_label_srcs",
+    srcs = [package_relative_label("a.yaml")],
+    expression = ".",
+)
+
+diff_test(
+    name = "case_label_srcs_test",
+    file1 = "a.yaml",
+    file2 = ":case_select_srcs",
+)
+
 yq(
     name = "case_dot_expression_otherextension",
     srcs = ["a.whatever"],

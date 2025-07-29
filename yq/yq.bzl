@@ -75,9 +75,10 @@ def yq(name, srcs, expression = ".", args = [], outs = None, **kwargs):
     # Select statements can't be inspected by macros, so if you're using configurable
     # attributes, you'll need to add the -P or -p=xml arguments yourself as needed.
     if type(srcs) != "select" and len(srcs) > 0:
-        if srcs[0].endswith(".json") and "-P" not in args:
+        first_label = native.package_relative_label(srcs[0])
+        if first_label.name.endswith(".json") and "-P" not in args:
             args.append("-P")
-        elif srcs[0].endswith(".xml") and "-p=xml" not in args:
+        elif first_label.name.endswith(".xml") and "-p=xml" not in args:
             args.append("-p=xml")
 
     _yq_rule(
