@@ -2,6 +2,9 @@
 workspaces:
   - .
   - e2e/smoke
+bazel:
+  flags:
+    - --config=ci
 tasks:
   - test:
       name: "Test (Bazel 7.x)"
