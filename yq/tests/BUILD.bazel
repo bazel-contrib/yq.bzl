@@ -65,7 +65,7 @@ yq(
 diff_test(
     name = "case_label_srcs_test",
     file1 = "a.yaml",
-    file2 = ":case_select_srcs",
+    file2 = ":case_label_srcs",
 )
 
 yq(
