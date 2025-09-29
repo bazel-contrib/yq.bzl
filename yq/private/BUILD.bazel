@@ -1,4 +1,4 @@
-load("@aspect_bazel_lib//:bzl_library.bzl", "bzl_library")
+load("@bazel_lib//:bzl_library.bzl", "bzl_library")
 
 exports_files(["parse_status_file.yq"])
 
@@ -7,6 +7,6 @@ bzl_library(
     srcs = ["yq.bzl"],
     visibility = ["//visibility:public"],
     deps = [
-        "@aspect_bazel_lib//lib:stamping",
+        "@bazel_lib//lib:stamping",
     ],
 )
