@@ -1,4 +1,94 @@
-"Public API for calling yq"
+"""
+Load in your `BUILD` file:
+
+```starlark
+load("@yq.bzl", "yq")
+```
+
+Examples
+--------
+
+Remove fields:
+```starlark
+yq(
+    name = "safe-config",
+    srcs = ["config.yaml"],
+    expression = "del(.credentials)",
+)
+```
+
+Merge two yaml documents:
+```starlark
+yq(
+    name = "ab",
+    srcs = [
+        "a.yaml",
+        "b.yaml",
+    ],
+    expression = ". as $item ireduce ({}; . * $item )",
+)
+```
+
+Split a yaml file into several files:
+```starlark
+yq(
+    name = "split",
+    srcs = ["multidoc.yaml"],
+    outs = [
+        "first.yml",
+        "second.yml",
+    ],
+    args = [
+        "-s '.a'",  # Split expression
+        "--no-doc", # Exclude document separator --
+    ],
+)
+```
+
+Convert a yaml file to json:
+```starlark
+yq(
+    name = "convert-to-json",
+    srcs = ["foo.yaml"],
+    args = ["-o=json"],
+    outs = ["foo.json"],
+)
+```
+
+Convert a json file to yaml:
+```starlark
+yq(
+    name = "convert-to-yaml",
+    srcs = ["bar.json"],
+    args = ["-P"],
+    outs = ["bar.yaml"],
+)
+```
+
+Call yq in a genrule:
+```starlark
+genrule(
+    name = "generate",
+    srcs = ["farm.yaml"],
+    outs = ["genrule_output.yaml"],
+    cmd = "$(YQ_BIN) '.moo = \"cow\"' $(location farm.yaml) > $@",
+    toolchains = ["@yq_toolchains//:resolved_toolchain"],
+)
+```
+
+With --stamp, causes properties to be replaced by version control info.
+```starlark
+yq(
+    name = "stamped",
+    srcs = ["package.yaml"],
+    expression = "|".join([
+        "load(strenv(STAMP)) as $stamp",
+        # Provide a default using the "alternative operator" in case $stamp is empty dict.
+        ".version = ($stamp.BUILD_EMBED_LABEL // "<unstamped>")",
+    ]),
+)
+```
+"""
 
 load("//yq/private:yq.bzl", _is_split_operation = "is_split_operation", _yq_lib = "yq_lib")
 
