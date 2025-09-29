@@ -1,6 +1,6 @@
 """Implementation for yq rule"""
 
-load("@aspect_bazel_lib//lib:stamping.bzl", "STAMP_ATTRS", "maybe_stamp")
+load("@bazel_lib//lib:stamping.bzl", "STAMP_ATTRS", "maybe_stamp")
 
 _yq_attrs = dict({
     "srcs": attr.label_list(
