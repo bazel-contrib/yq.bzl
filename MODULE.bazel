@@ -10,12 +10,6 @@ bazel_dep(name = "bazel_skylib", version = "1.4.1")
 bazel_dep(name = "package_metadata", version = "0.0.2")
 bazel_dep(name = "platforms", version = "0.0.5")
 
-# Bazel 9 compatibility
-single_version_override(
-    module_name = "aspect_bazel_lib",
-    version = "2.19.3",
-)
-
 _toolchains = use_extension("//yq:extensions.bzl", "yq")
 _toolchains.toolchain()
 use_repo(_toolchains, "yq_toolchains")
