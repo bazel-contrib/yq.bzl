@@ -43,5 +43,3 @@ jobs:
       contents: write # allow create release
       id-token: write
       attestations: write
-
-      

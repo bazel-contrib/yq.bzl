@@ -6,9 +6,3 @@ local_path_override(
     module_name = "yq.bzl",
     path = "../..",
 )
-
-# Bazel 9 compatibility
-single_version_override(
-    module_name = "aspect_bazel_lib",
-    version = "2.19.3",
-)
