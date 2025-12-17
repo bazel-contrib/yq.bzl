@@ -1,5 +1,5 @@
 bazel_dep(name = "yq.bzl", version = "0.0.0")
-bazel_dep(name = "bazel_lib", version = "3.0.0-beta.1")
+bazel_dep(name = "bazel_lib", version = "3.0.1")
 bazel_dep(name = "bazel_skylib", version = "1.8.1")
 
 local_path_override(
