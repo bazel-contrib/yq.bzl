@@ -87,6 +87,12 @@ yq_toolchain(name = "yq_toolchain", bin = "{0}", visibility = ["//visibility:pub
     # Base BUILD file for this repository
     rctx.file("BUILD.bazel", build_content)
 
+    # Bazel <8.3.0 lacks rctx.repo_metadata
+    if not hasattr(rctx, "repo_metadata"):
+        return None
+
+    return rctx.repo_metadata(reproducible = True)
+
 yq_platform_repo = repository_rule(
     implementation = _yq_platform_repo_impl,
     doc = "Fetch external tools needed for yq toolchain",
