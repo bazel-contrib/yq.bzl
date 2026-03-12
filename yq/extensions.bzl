@@ -1,7 +1,7 @@
 "Support calls from MODULE.bazel to setup the toolchains"
 
 load("//yq/toolchain:platforms.bzl", "YQ_PLATFORMS", "yq_platform_repo")
-load("//yq/toolchain:toolchain.bzl", "yq_toolchains_repo")
+load("//yq/toolchain:toolchain.bzl", "yq_host_alias_repo", "yq_toolchains_repo")
 load("//yq/toolchain:versions.bzl", "DEFAULT_YQ_VERSION")
 
 def _toolchain_extension(module_ctx):
@@ -22,6 +22,7 @@ def _toolchain_extension(module_ctx):
                 )
 
             yq_toolchains_repo(name = "%s_toolchains" % toolchain.name, user_repository_name = toolchain.name)
+            yq_host_alias_repo(name = toolchain.name)
 
 toolchain = tag_class(attrs = {
     "name": attr.string(doc = """\
