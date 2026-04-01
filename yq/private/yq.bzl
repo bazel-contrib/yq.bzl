@@ -52,7 +52,7 @@ def _yq_impl(ctx):
             tools = [yq_bin],
             inputs = [stamp.stable_status_file, stamp.volatile_status_file, ctx.file._parse_status_file_expression],
             outputs = [stamp_yaml],
-            command = "{yq} --input-format=props --from-file {expression} {stable} {volatile} > {out}".format(
+            command = "{yq} --input-format=props --output-format=yaml --from-file {expression} {stable} {volatile} > {out}".format(
                 yq = yq_bin.path,
                 expression = ctx.file._parse_status_file_expression.path,
                 stable = stamp.stable_status_file.path,
