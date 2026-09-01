@@ -90,6 +90,7 @@ yq(
 ```
 """
 
+load("@bazel_lib//lib:diff_test.bzl", "diff_test")
 load("//yq/private:yq.bzl", _is_split_operation = "is_split_operation", _yq_lib = "yq_lib")
 
 _yq_rule = rule(
@@ -97,6 +98,55 @@ _yq_rule = rule(
     implementation = _yq_lib.implementation,
     toolchains = ["@yq.bzl//yq/toolchain:type"],
 )
+
+def yq_test(name, file1, file2, filter1 = ".", filter2 = ".", **kwargs):
+    """Assert that the given YAML files have the same semantic content.
+
+    Uses yq to filter each file, recursively sort mapping keys, and serialize
+    the results as compact JSON before comparing them. The default filter of
+    `"."` compares each whole file.
+
+    Args:
+        name: Name of the resulting diff_test target.
+        file1: A YAML file.
+        file2: Another YAML file.
+        filter1: A yq expression to apply to file1.
+        filter2: A yq expression to apply to file2.
+        **kwargs: Additional named arguments for the resulting diff_test.
+    """
+    name1 = "{}_yq1".format(name)
+    name2 = "{}_yq2".format(name)
+    normalize_args = [
+        "--output-format=json",
+        "--indent=0",
+    ]
+    _yq_rule(
+        name = name1,
+        srcs = [file1],
+        expression = "({}) | sort_keys(..)".format(filter1),
+        args = normalize_args,
+        outs = [name1 + ".json"],
+    )
+    _yq_rule(
+        name = name2,
+        srcs = [file2],
+        expression = "({}) | sort_keys(..)".format(filter2),
+        args = normalize_args,
+        outs = [name2 + ".json"],
+    )
+
+    diff_test(
+        name = name,
+        file1 = name1,
+        file2 = name2,
+        failure_message = "'{}' from {} doesn't match '{}' from {}".format(
+            filter1,
+            file1,
+            filter2,
+            file2,
+        ),
+        **kwargs
+    )
 
 def yq(name, srcs, expression = ".", args = [], outs = None, **kwargs):
     """Invoke yq with an expression on a set of input files.

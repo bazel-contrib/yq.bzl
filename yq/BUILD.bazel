@@ -6,5 +6,8 @@ bzl_library(
     name = "yq",
     srcs = ["yq.bzl"],
     visibility = ["//visibility:public"],
-    deps = ["//yq/private:yq"],
+    deps = [
+        "//yq/private:yq",
+        "@bazel_lib//lib:diff_test",
+    ],
 )

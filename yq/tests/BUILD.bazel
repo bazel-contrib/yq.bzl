@@ -2,13 +2,27 @@ load("@bazel_lib//lib:copy_file.bzl", "copy_file")
 load("@bazel_lib//lib:diff_test.bzl", "diff_test")
 load("@bazel_lib//lib:testing.bzl", "assert_contains")
 load("@bazel_skylib//rules:write_file.bzl", "write_file")
-load("//yq:yq.bzl", "yq")
+load("//yq:yq.bzl", "yq", "yq_test")
 
 exports_files(
     [
         "a.yaml",
     ],
     visibility = ["//visibility:public"],
+)
+
+yq_test(
+    name = "case_yq_test_semantic_yaml",
+    file1 = "a.yaml",
+    file2 = "a-reordered.yaml",
+)
+
+yq_test(
+    name = "case_yq_test_filters",
+    file1 = "a.yaml",
+    file2 = "a-reordered.yaml",
+    filter1 = ".moo",
+    filter2 = ".moo",
 )
 
 # TODO(alex): fix these tests
