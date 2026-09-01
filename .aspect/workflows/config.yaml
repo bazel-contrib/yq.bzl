@@ -2,6 +2,7 @@
 workspaces:
   - .
   - e2e/smoke
+  - e2e/host_alias
 tasks:
   - test:
       name: "Test (Bazel 7.x)"

@@ -1,0 +1,12 @@
+bazel_dep(name = "yq.bzl", version = "0.0.0")
+bazel_dep(name = "rules_shell", version = "0.6.1")
+
+local_path_override(
+    module_name = "yq.bzl",
+    path = "../..",
+)
+
+# Deliberately request only "yq" and not "yq_toolchains".
+# See README.md for why this workspace exists.
+toolchains = use_extension("@yq.bzl//yq:extensions.bzl", "yq")
+use_repo(toolchains, "yq")
