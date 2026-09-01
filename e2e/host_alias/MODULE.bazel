@@ -1,6 +1,4 @@
 bazel_dep(name = "yq.bzl", version = "0.0.0")
-bazel_dep(name = "bazel_lib", version = "3.7.1")
-bazel_dep(name = "bazel_skylib", version = "1.9.0")
 bazel_dep(name = "rules_shell", version = "0.6.1")
 
 local_path_override(
@@ -8,5 +6,7 @@ local_path_override(
     path = "../..",
 )
 
+# Deliberately request only "yq" and not "yq_toolchains".
+# See README.md for why this workspace exists.
 toolchains = use_extension("@yq.bzl//yq:extensions.bzl", "yq")
 use_repo(toolchains, "yq")
