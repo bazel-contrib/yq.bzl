@@ -17,6 +17,15 @@ yq(
 )
 ```
 
+Load an expression from a file:
+```starlark
+yq(
+    name = "safe-config-from-file",
+    srcs = ["config.yaml"],
+    expression_file = "remove-credentials.yq",
+)
+```
+
 Merge two yaml documents:
 ```starlark
 yq(
@@ -108,8 +117,8 @@ def yq_test(name, file1, file2, filter1 = ".", filter2 = ".", **kwargs):
 
     Args:
         name: Name of the resulting diff_test target.
-        file1: A YAML file.
-        file2: Another YAML file.
+        file1: A YAML file, or `None` to evaluate `filter1` with null input.
+        file2: Another YAML file, or `None` to evaluate `filter2` with null input.
         filter1: A yq expression to apply to file1.
         filter2: A yq expression to apply to file2.
         **kwargs: Additional named arguments for the resulting diff_test.
@@ -122,14 +131,14 @@ def yq_test(name, file1, file2, filter1 = ".", filter2 = ".", **kwargs):
     ]
     _yq_rule(
         name = name1,
-        srcs = [file1],
+        srcs = [file1] if file1 != None else [],
         expression = "({}) | sort_keys(..)".format(filter1),
         args = normalize_args,
         outs = [name1 + ".json"],
     )
     _yq_rule(
         name = name2,
-        srcs = [file2],
+        srcs = [file2] if file2 != None else [],
         expression = "({}) | sort_keys(..)".format(filter2),
         args = normalize_args,
         outs = [name2 + ".json"],
@@ -148,7 +157,7 @@ def yq_test(name, file1, file2, filter1 = ".", filter2 = ".", **kwargs):
         **kwargs
     )
 
-def yq(name, srcs, expression = ".", args = [], outs = None, **kwargs):
+def yq(name, srcs, expression = None, args = [], outs = None, expression_file = None, **kwargs):
     """Invoke yq with an expression on a set of input files.
 
     yq is capable of parsing and outputting to other formats. See their [docs](https://mikefarah.gitbook.io/yq) for more examples.
@@ -156,13 +165,15 @@ def yq(name, srcs, expression = ".", args = [], outs = None, **kwargs):
     Args:
         name: Name of the rule
         srcs: List of input file labels
-        expression: yq expression (https://mikefarah.gitbook.io/yq/commands/evaluate).
+        expression: yq expression (https://mikefarah.gitbook.io/yq/commands/evaluate). Cannot be used with `expression_file`.
 
             Defaults to the identity expression ".".
             Subject to stamp variable replacements, see [Stamping](./stamping.md).
             When stamping is enabled, an environment variable named "STAMP" will be available in the expression.
 
             Be careful to write the filter so that it handles unstamped builds, as in the example above.
+
+        expression_file: File containing a yq expression (alternative to `expression`).
 
         args: Additional args to pass to yq.
 
@@ -177,6 +188,9 @@ def yq(name, srcs, expression = ".", args = [], outs = None, **kwargs):
         **kwargs: Other common named parameters such as `tags` or `visibility`
     """
     args = args[:]
+
+    if expression == None and expression_file == None:
+        expression = "."
 
     if not _is_split_operation(args):
         # For split operations we can't predeclare outs because the name of the resulting files
@@ -223,6 +237,7 @@ def yq(name, srcs, expression = ".", args = [], outs = None, **kwargs):
         name = name,
         srcs = srcs,
         expression = expression,
+        expression_file = expression_file,
         args = args,
         outs = outs,
         **kwargs

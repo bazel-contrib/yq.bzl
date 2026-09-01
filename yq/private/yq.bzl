@@ -9,6 +9,7 @@ _yq_attrs = dict({
         allow_empty = True,
     ),
     "expression": attr.string(mandatory = False),
+    "expression_file": attr.label(allow_single_file = True),
     "args": attr.string_list(),
     "outs": attr.output_list(mandatory = True),
     "_parse_status_file_expression": attr.label(
@@ -32,6 +33,11 @@ def _yq_impl(ctx):
     outs = ctx.outputs.outs
     args = ctx.attr.args[:]
     inputs = ctx.files.srcs[:]
+
+    if ctx.attr.expression and ctx.attr.expression_file:
+        fail("Cannot provide both an expression and an expression_file")
+    if ctx.attr.expression_file:
+        inputs.append(ctx.file.expression_file)
 
     split_operation = is_split_operation(args)
 
@@ -77,9 +83,10 @@ def _yq_impl(ctx):
     cmd = "cd {bin_dir} && {yq} {args} {eval_cmd} {expression} {sources} {maybe_out}".format(
         bin_dir = bin_dir,
         yq = escape_bin_dir + yq_bin.path,
-        eval_cmd = "eval" if len(inputs) <= 1 else "eval-all",
+        # Keep expression_file and stamp files from changing how sources select the subcommand.
+        eval_cmd = "eval" if len(ctx.files.srcs) == 0 else "eval-all",
         args = " ".join(args),
-        expression = "'%s'" % ctx.attr.expression if ctx.attr.expression else "",
+        expression = "--from-file '%s%s'" % (escape_bin_dir, ctx.file.expression_file.path) if ctx.attr.expression_file else "'%s'" % ctx.attr.expression if ctx.attr.expression else "",
         sources = " ".join(["'%s%s'" % (escape_bin_dir, file.path) for file in ctx.files.srcs]),
         # In the -s/--split-exr case, the out file names are determined by the yq expression
         maybe_out = (" > %s%s" % (escape_bin_dir, outs[0].path)) if len(outs) == 1 else "",

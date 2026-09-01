@@ -25,6 +25,20 @@ yq_test(
     filter2 = ".moo",
 )
 
+yq_test(
+    name = "case_yq_test_null_input",
+    file1 = None,
+    file2 = "generated-from-expression.yaml",
+    filter1 = ".a.b.c = \"cat\"",
+)
+
+yq_test(
+    name = "case_yq_test_null_input_file2",
+    file1 = "generated-from-expression.yaml",
+    file2 = None,
+    filter2 = ".a.b.c = \"cat\"",
+)
+
 # TODO(alex): fix these tests
 not_windows = select({
     "@platforms//os:windows": ["@platforms//:incompatible"],
@@ -54,6 +68,32 @@ diff_test(
     name = "case_dot_expression_test",
     file1 = "a.yaml",
     file2 = ":case_dot_expression",
+)
+
+# Expression loaded from a file
+yq(
+    name = "case_expression_file",
+    srcs = ["a.yaml"],
+    expression_file = "expression.yq",
+)
+
+diff_test(
+    name = "case_expression_file_test",
+    file1 = "generated-from-expression-file.yaml",
+    file2 = ":case_expression_file",
+)
+
+# Expression file supports null input
+yq(
+    name = "case_expression_file_no_sources",
+    srcs = [],
+    expression_file = "expression.yq",
+)
+
+diff_test(
+    name = "case_expression_file_no_sources_test",
+    file1 = "generated-from-expression-file-no-sources.yaml",
+    file2 = ":case_expression_file_no_sources",
 )
 
 # srcs could be select() statements
