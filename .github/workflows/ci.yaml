@@ -25,7 +25,7 @@ jobs:
     steps:
       - uses: actions/checkout@v7
       - uses: bazel-contrib/setup-bazel@0.19.0
-      - run: bazel test //...
+      - run: bazel test --test_output=errors //...
   pre-commit:
     runs-on: ubuntu-latest
     steps:
