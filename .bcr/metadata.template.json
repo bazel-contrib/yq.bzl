@@ -2,12 +2,12 @@
   "homepage": "https://github.com/bazel-contrib/yq.bzl",
   "maintainers": [
     {
-      "email": "alex@aspect.build",
+      "email": "eagle@post.harvard.edu",
       "github": "alexeagle",
       "name": "Alex Eagle"
     },
     {
-      "email": "derek@aspect.build",
+      "email": "derek.m.cormier@gmail.com",
       "github": "kormide",
       "name": "Derek Cormier"
     }
